@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dynamicstorage", "dynamicstorage\dynamicstorage.vcxproj", "{CE6853DE-BFA8-43D9-B3DE-42DFE3F8F34F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CE6853DE-BFA8-43D9-B3DE-42DFE3F8F34F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{CE6853DE-BFA8-43D9-B3DE-42DFE3F8F34F}.Debug|Win32.Build.0 = Debug|Win32
+		{CE6853DE-BFA8-43D9-B3DE-42DFE3F8F34F}.Release|Win32.ActiveCfg = Release|Win32
+		{CE6853DE-BFA8-43D9-B3DE-42DFE3F8F34F}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
