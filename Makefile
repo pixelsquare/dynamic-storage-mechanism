@@ -1,4 +1,4 @@
-CXX = g++
+CXX = g++ -std=c++11
 CXXFLAGS = -shared -g -Wall -Wno-unknown-pragmas -fPIC -Wno-unused-function 
 
 SRC_DIR := dynamic-storage

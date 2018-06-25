@@ -1,19 +1,21 @@
-sudo: false
+os: linux
+dist: trusty
+sudo: required
 language: cpp
-compiler:
-    - gcc
-#   - clang
+compiler: gcc
 addons:
   apt:
     sources:
         - ubuntu-toolchain-r-test
-        - llvm-toolchain-precise-3.8
     packages:
+        - gcc-6
         - g++-6
-#       - clang-3.8
+before_install:
+    - if [ "$CXX" == "g++" ]; then sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test; fi
+    - sudo apt-get update -qq
 install:
-    - "[ $CXX = g++ ] && export CXX=g++-6 || true"
- #  - "[ $CXX = clang++ ] && export CXX=clang++-3.8 || true"
+    - if [ "$CXX" = "g++" ]; then sudo apt-get install -qq g++-6 gcc-6; fi
+    - if [ "$CXX" = "g++" ]; then export CXX="g++-6" CC="gcc-6"; fi
 before_script:
     - mkdir obj
     - mkdir lib
