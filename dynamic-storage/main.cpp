@@ -107,7 +107,7 @@ int main(int argv, char *argc[])
 
 #if _WIN32
     _getch();
-#endif;
+#endif
 
     return 0;
 }
