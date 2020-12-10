@@ -1,181 +1,135 @@
 #include <iostream>
-#include <cstdlib>
-
-#if _WIN32
 #include <conio.h>
-#endif
 
-class DynamicStorage
-{
-public:
-    DynamicStorage()
-    : _id(0)
-    , _value(0)
-    {
-        static int instanceID = 0;
-        _instanceID = ++instanceID;
-    }
+using namespace std;
 
-    DynamicStorage(int id, char value)
-    : _id(id)
-    , _value(value)
-    {
-        static int instanceID = 0;
-        _instanceID = ++instanceID;
-    }
-
-    void set(int id, char value)
-    {
-        _id = id;
-        _value = value;
-    }
-
-    int getId()
-    {
-        return _id;
-    }
-
-    char getValue()
-    {
-        return _value;
-    }
-
-    int getInstanceID()
-    {
-        return _instanceID;
-    }
-
+class DynamicStorage {
 private:
-    int _id;
-    char _value;
-    int _instanceID;
+	int templateInstance, defaultID;
+	char letter;
 
-protected:
+public:
+	DynamicStorage() {
+		templateInstance = 0;
+		defaultID = 1;
+		letter = 'z';
+	}
+
+	void SetID(int num) { defaultID = num; }
+	int GetID() { return defaultID; }
+
+	void SetTemplateInstance(int num) { templateInstance = num; }
+	int GetTemplateInstance() { return templateInstance; }
+
+	void SetTemplateLetter(char let) { letter = let; }
+	char GetTemplateLetter() { return letter; }
 };
 
-void showMenu(int &selectedIdx);
-void changeStore(DynamicStorage *&storage1, DynamicStorage *&storage2, DynamicStorage *&storage3, DynamicStorage *&mainStorage);
-void setStore(DynamicStorage *mainStorage);
-void showStore(DynamicStorage *mainStorage);
+DynamicStorage *instance1;
+DynamicStorage *instance2;
+DynamicStorage *instance3;
+DynamicStorage *mainStorePtr;
 
-int main(int argv, char *argc[])
-{
-    DynamicStorage *storage1 = new DynamicStorage();
-    DynamicStorage *storage2 = new DynamicStorage();
-    DynamicStorage *storage3 = new DynamicStorage(15, 'c');
-    DynamicStorage *mainStorage = new DynamicStorage();
+void ChangeStore(DynamicStorage *store1, DynamicStorage *store2, DynamicStorage *store3, DynamicStorage*& mainPtr);
+void SetStore(DynamicStorage*& mainPtr);
+void ShowStore(DynamicStorage *mainStore);
 
-    while (true)
-    {
-        int selectedIdx = 0;
-        showMenu(selectedIdx);
+void ShowMenu() {
+	int numInput = 0;
+	cout << "Welcome to the Dynamic Storage Mechanism Subsystem!" << endl << endl;
+	cout << "1 - Set values to current store." << endl;
+	cout << "2 - Change current selected store." << endl;
+	cout << "3 - Show current value store." << endl << endl;
 
-        switch (selectedIdx)
-        {
-        case 1:
-            setStore(mainStorage);
-            break;
-        case 2:
-            changeStore(storage1, storage2, storage3, mainStorage);
-            break;
-        case 3:
-            showStore(mainStorage);
-            break;
-        }
+	cin >> numInput;
+	if(!mainStorePtr)
+		cout << "Current store is pointing at nothing." << endl;
 
-        char willContinueKey = ' ';
+	switch(numInput) {
+	case 1:
+		SetStore(mainStorePtr);
+		break;
 
-        do
-        {
-            std::cout << std::endl;
-            std::cout << "Do you want to try again? (y/n)" << std::endl;
-            std::cin >> willContinueKey;
+	case 2:
+		ChangeStore(instance1, instance2, instance3, mainStorePtr);
+		break;
 
-            std::cout << std::endl;
-            std::cout << std::endl;
-        } 
-        while (willContinueKey != 'y' && willContinueKey != 'n');
-
-        if (willContinueKey == 'n')
-        {
-            break;
-        }
-    }
-
-    std::cout << std::endl;
-    std::cout << "Thanks for playing!" << std::endl;
-
-#if _WIN32
-    _getch();
-#endif;
-
-    return 0;
+	case 3:
+		ShowStore(mainStorePtr);
+		break;
+	}
 }
 
-void showMenu(int &selectedIdx)
-{
-    std::cout << "Welcome to the Dynamic Storage Mechanism Subsystem!" << std::endl;
-    std::cout << std::endl;
+void ChangeStore(DynamicStorage *store1, DynamicStorage *store2, DynamicStorage *store3, DynamicStorage*& mainPtr) {
+	if(mainPtr)
+		cout << "Current store value is " << mainPtr->GetTemplateInstance() << endl;
 
-    std::cout << "1 - Set values to current store." << std::endl;
-    std::cout << "2 - Change current selected store." << std::endl;
-    std::cout << "3 - Show current value store." << std::endl;
-    std::cout << std::endl;
+	int numInput = 0;
+	cout << "What store would you like to use? (1-3 only)" << endl;
+	cin >> numInput;
 
-    std::cin >> selectedIdx;
+	switch(numInput) {
+	case 1:
+		mainPtr = store1;
+		break;
+
+	case 2:
+		mainPtr = store2;
+		break;
+
+	case 3:
+		mainPtr = store3;
+		break;
+	}
+
+	cout << "New store value is " << numInput << endl << endl;
 }
 
-void changeStore(DynamicStorage *&storage1, DynamicStorage *&storage2, DynamicStorage *&storage3, DynamicStorage *&mainStorage)
-{
-    if (mainStorage == NULL)
-    {
-        std::cout << "Current store is pointing at nothing." << std::endl;
-    }
+void SetStore(DynamicStorage*& mainPtr) {
+	int numberInput = 0;
+	char letterInput;
+	cout << "Current store value to change is " << mainPtr->GetID() << endl;
+	
+	cout << "Enter new number." << endl;
+	cin >> numberInput;
+	mainPtr->SetID(numberInput);
 
-    std::cout << "What store would you like to use? (1-3 only)" << std::endl;
-
-    int selectedIdx = 0;
-    std::cin >> selectedIdx;
-
-    if (storage1->getInstanceID() == selectedIdx)
-    {
-        mainStorage = storage1;
-    }
-    else if (storage2->getInstanceID() == selectedIdx)
-    {
-        mainStorage = storage2;
-    }
-    else if (storage3->getInstanceID() == selectedIdx)
-    {
-        mainStorage = storage3;
-    }
-
-    std::cout << "New store value is " << mainStorage->getInstanceID() << std::endl;
+	cout << "Enter new letter." << endl;
+	cin >> letterInput;
+	mainPtr->SetTemplateLetter(letterInput);
+	
+	cout << "New values have been set." << endl << endl;
 }
 
-void setStore(DynamicStorage *mainStorage)
-{
-    int num = 0;
-    char letter = ' ';
-
-    std::cout << "Current store value to change is " << mainStorage->getInstanceID() << std::endl;
-    
-    std::cout << "Enter new number." << std::endl;
-    std::cin >> num;
-
-    std::cout << "Enter new letter." << std::endl;
-    std::cin >> letter;
-
-    mainStorage->set(num, letter);
-
-    std::cout << "New values have been set." << std::endl;
-    std::cout << std::endl;
+void ShowStore(DynamicStorage *mainStore) {
+	cout << "Current store value is " << mainStore->GetTemplateInstance() << endl;
+	cout << "Store's number is " << mainStore->GetID() << endl;
+	cout << "Store's letter is " << mainStore->GetTemplateLetter() << endl << endl;
 }
 
-void showStore(DynamicStorage *mainStorage)
-{
-    std::cout << "Current store value is " << mainStorage->getInstanceID() << std::endl;
-    std::cout << "Store's number is " << mainStorage->getId() << std::endl;
-    std::cout << "Store's letter is " << mainStorage->getValue() << std::endl;
-    std::cout << std::endl;
+int main() {
+	instance1 = new DynamicStorage;
+	instance2 = new DynamicStorage;
+	instance3 = new DynamicStorage;
+
+	instance1->SetTemplateInstance(1);
+	instance2->SetTemplateInstance(2);
+	instance3->SetTemplateInstance(3);
+
+	instance3->SetID(15);
+	instance3->SetTemplateLetter('c');
+
+	char userInput;
+
+	do {
+		ShowMenu();
+		cout << "Do you want to try again? (y/n)" << endl;
+		cin >> userInput;
+		cout << endl << endl;
+	} while(userInput == 'y');
+
+	cout << "Thank you!";
+
+	getch();
+	return 0;
 }
